@@ -43,9 +43,9 @@ func BenchmarkCall(b *testing.B) {
 		}
 	})
 	b.Run("AnonymousFunctionCall", func(b *testing.B) {
-		bt := new(BenchType).CallMock
+		bt := new(BenchType)
 		for i := 0; i < b.N; i++ {
-			bt(0, "hello", 100, 100, 10000)
+			bt.CallMock(0, "hello", 100, 100, 10000)
 		}
 	})
 	b.Run("UnsafeCall", func(b *testing.B) {
