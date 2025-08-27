@@ -30,6 +30,8 @@ func TestAllMap(t *testing.T) {
 			printFn("SyncMap118  : ", errStr)
 		case *RCUMap[string, int]:
 			printFn("RCUMap      : ", errStr)
+		case *BTreeMap[string, int]:
+			printFn("BTreeMap    : ", errStr)
 		}
 	}
 	type gen struct {
@@ -37,7 +39,7 @@ func TestAllMap(t *testing.T) {
 		Value int
 	}
 	const KeyNum int = 16384
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 6; i++ {
 		var iMap MapOnTest[string, int]
 		switch i {
 		case 0:
@@ -50,6 +52,8 @@ func TestAllMap(t *testing.T) {
 			iMap = &SyncMap118[string, int]{}
 		case 4:
 			iMap = NewRCUMap[string, int](128)
+		case 5:
+			iMap = NewBtreeMap[string, int](128)
 		}
 		genData := make([]gen, KeyNum)
 		now := time.Now()
