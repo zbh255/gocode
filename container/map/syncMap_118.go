@@ -1,6 +1,6 @@
 //go:build go1.18
 
-package container
+package _map
 
 import (
 	"sync"

@@ -1,4 +1,4 @@
-package container
+package _map
 
 type mapNode[K comparable, V any] struct {
 	Key     K

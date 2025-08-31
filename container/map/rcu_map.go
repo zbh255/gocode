@@ -1,4 +1,4 @@
-package container
+package _map
 
 import (
 	"sync"

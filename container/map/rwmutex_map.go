@@ -1,6 +1,6 @@
 //go:build go1.18 || go.19 || go.1.20
 
-package container
+package _map
 
 import (
 	"sync"

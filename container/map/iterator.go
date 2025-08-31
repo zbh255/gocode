@@ -1,4 +1,4 @@
-package container
+package _map
 
 // Iterator 是一个迭代器, 它能按照你自己设置的规则返回每一次的数据
 // 它的实现不是goroutine安全的
