@@ -387,6 +387,26 @@ func (bt *BTreeMap[K, V]) maxKey(root *btNode[K, V]) (key K) {
 	return
 }
 
+func (bt *BTreeMap[K, V]) MinKey() (key K) {
+	bt.rw.RLock()
+	defer bt.rw.RUnlock()
+	if bt.root == nil || len(bt.root.keywords) == 0 {
+		return
+	}
+	return bt.minKey(bt.root)
+}
+
+func (bt *BTreeMap[K, V]) minKey(root *btNode[K, V]) (key K) {
+	for {
+		key = root.keywords[0].key
+		if root.isLeaf() {
+			break
+		}
+		root = root.subNodes[0]
+	}
+	return
+}
+
 func (bt *BTreeMap[K, V]) nodeGEQMin(node *btNode[K, V]) bool {
 	return uint32(len(node.keywords)) >= bt.m/2-1
 }
