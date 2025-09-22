@@ -1,0 +1,3 @@
+package atomicx
+
+func pause()
