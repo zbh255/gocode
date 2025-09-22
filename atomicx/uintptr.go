@@ -6,62 +6,70 @@ type Uintptr struct {
 	atomic.Uintptr
 }
 
-func (x *Uintptr) GtAndSwap(v uintptr) {
-	old2 := x.Load()
-	for old2 < v {
-		rt_procPin()
-		x.Store(v)
-		old2 = x.Load()
-		if old2 == v {
-			rt_procUnpin()
+func (x *Uintptr) SwapIfGt(v uintptr) (old uintptr, swapped bool) {
+	for {
+		old = x.Load()
+		if old >= v {
 			break
 		}
-		// pause()
-		rt_procUnpin()
+		if !x.CompareAndSwap(old, v) {
+			pause()
+			continue
+		} else {
+			swapped = true
+			break
+		}
 	}
+	return
 }
 
-func (x *Uintptr) GteAndSwap(v uintptr) {
-	old2 := x.Load()
-	for old2 <= v {
-		rt_procPin()
-		x.Store(v)
-		old2 = x.Load()
-		if old2 == v {
-			rt_procUnpin()
+func (x *Uintptr) SwapIfGte(v uintptr) (old uintptr, swapped bool) {
+	for {
+		old = x.Load()
+		if old > v {
 			break
 		}
-		// pause()
-		rt_procUnpin()
+		if !x.CompareAndSwap(old, v) {
+			pause()
+			continue
+		} else {
+			swapped = true
+			break
+		}
 	}
+	return
 }
 
-func (x *Uintptr) GlAndSwap(v uintptr) {
-	old2 := x.Load()
-	for old2 > v {
-		rt_procPin()
-		x.Store(v)
-		old2 = x.Load()
-		if old2 == v {
-			rt_procUnpin()
+func (x *Uintptr) SwapIfGl(v uintptr) (old uintptr, swapped bool) {
+	for {
+		old = x.Load()
+		if old <= v {
 			break
 		}
-		// pause()
-		rt_procUnpin()
+		if !x.CompareAndSwap(old, v) {
+			pause()
+			continue
+		} else {
+			swapped = true
+			break
+		}
 	}
+	return
 }
 
-func (x *Uintptr) GleAndSwap(v uintptr) {
-	old2 := x.Load()
-	for old2 >= v {
-		rt_procPin()
-		x.Store(v)
-		old2 = x.Load()
-		if old2 == v {
-			rt_procUnpin()
+func (x *Uintptr) SwapIfGle(v uintptr) (old uintptr, swapped bool) {
+	for {
+		old = x.Load()
+		if old < v {
 			break
 		}
-		// pause()
-		rt_procUnpin()
+		if !x.CompareAndSwap(old, v) {
+			pause()
+			continue
+		} else {
+			swapped = true
+			break
+		}
 	}
+	return
 }

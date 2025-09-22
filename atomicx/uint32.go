@@ -6,62 +6,70 @@ type Uint32 struct {
 	atomic.Uint32
 }
 
-func (x *Uint32) GtAndSwap(v uint32) {
-	old2 := x.Load()
-	for old2 < v {
-		rt_procPin()
-		x.Store(v)
-		old2 = x.Load()
-		if old2 == v {
-			rt_procUnpin()
+func (x *Uint32) SwapIfGt(v uint32) (old uint32, swapped bool) {
+	for {
+		old = x.Load()
+		if old >= v {
 			break
 		}
-		// pause()
-		rt_procUnpin()
+		if !x.CompareAndSwap(old, v) {
+			pause()
+			continue
+		} else {
+			swapped = true
+			break
+		}
 	}
+	return
 }
 
-func (x *Uint32) GteAndSwap(v uint32) {
-	old2 := x.Load()
-	for old2 <= v {
-		rt_procPin()
-		x.Store(v)
-		old2 = x.Load()
-		if old2 == v {
-			rt_procUnpin()
+func (x *Uint32) SwapIfGte(v uint32) (old uint32, swapped bool) {
+	for {
+		old = x.Load()
+		if old > v {
 			break
 		}
-		// pause()
-		rt_procUnpin()
+		if !x.CompareAndSwap(old, v) {
+			pause()
+			continue
+		} else {
+			swapped = true
+			break
+		}
 	}
+	return
 }
 
-func (x *Uint32) GlAndSwap(v uint32) {
-	old2 := x.Load()
-	for old2 > v {
-		rt_procPin()
-		x.Store(v)
-		old2 = x.Load()
-		if old2 == v {
-			rt_procUnpin()
+func (x *Uint32) SwapIfGl(v uint32) (old uint32, swapped bool) {
+	for {
+		old = x.Load()
+		if old <= v {
 			break
 		}
-		// pause()
-		rt_procUnpin()
+		if !x.CompareAndSwap(old, v) {
+			pause()
+			continue
+		} else {
+			swapped = true
+			break
+		}
 	}
+	return
 }
 
-func (x *Uint32) GleAndSwap(v uint32) {
-	old2 := x.Load()
-	for old2 >= v {
-		rt_procPin()
-		x.Store(v)
-		old2 = x.Load()
-		if old2 == v {
-			rt_procUnpin()
+func (x *Uint32) SwapIfGle(v uint32) (old uint32, swapped bool) {
+	for {
+		old = x.Load()
+		if old < v {
 			break
 		}
-		// pause()
-		rt_procUnpin()
+		if !x.CompareAndSwap(old, v) {
+			pause()
+			continue
+		} else {
+			swapped = true
+			break
+		}
 	}
+	return
 }
